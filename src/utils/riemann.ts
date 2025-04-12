@@ -2,14 +2,14 @@ import {add, chain, cos, divide, e, floor, log, multiply, pi, pow, sin, sqrt, su
 
 export function Z(t: number)
 {
-    const T = sqrt(t/(2*pi))
+    const T = sqrt(divide(t, multiply(2, pi)));
     const m = floor(T) as number;
     const z = 2*(t-m) - 1;
 
     let summ = 0;
     for (let n = 1; n <= m; n ++)
     {
-        summ +=  cos(theta(t) - t * log(n, e)) / (sqrt(n) as number) || 0;
+        summ += divide(cos(subtract(theta(t), multiply(t, log(n)))), sqrt(n)) || 0;
     }
     summ *= 2;
 
@@ -17,9 +17,9 @@ export function Z(t: number)
     let correction : any = 0;
     for (let j = 0; j < M; j ++)
     {
-        correction += multiply(multiply(pow(-1, j), pow(T, -j)), phi(j, z));
+        correction = add(correction, multiply(multiply(pow(-1, j), pow(T, -j)), phi(j, z)));
     }
-    correction *= multiply(pow(-1, m + 1), pow(T, -1/2)) as number;
+    correction = multiply(correction, multiply(pow(-1, m + 1), pow(T, -0.5)));
 
     const res = summ + correction;
     return res;
@@ -74,7 +74,7 @@ export function phi(j: number, z: number) : number
 
 export function theta(t: number) : number
 {
-    return t/2 * log(t/(2*pi), e) - t/2 - pi/8 + 1/(48*t) + 7/(5760*(pow(t, 3) as number));
+    return subtract(subtract(add(multiply(0.5, multiply(t, log(divide(t, multiply(2, pi))))), divide(1, multiply(48, t))), divide(7, multiply(5760, pow(t, 3)))), add(multiply(0.5, t), divide(pi, 8)));
 }
 
 console.log("test")
