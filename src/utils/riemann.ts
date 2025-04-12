@@ -2,73 +2,27 @@ import {add, chain, cos, divide, e, floor, log, multiply, pi, pow, sin, sqrt, su
 
 export function Z(t: number)
 {
-const T = sqrt(t/(2*pi))
-const m = floor(T) as number;
-const z = 2*(t-m) - 1;
-
+const T = sqrt(t / (2 * pi));
+const m = floor(T);
 let summ = 0;
-for (let n = 1; n <= m; n ++)
-{
-    summ +=  cos(theta(t) - t * log(n, e)) / (sqrt(n) as number) || 0;
+for (let n = 1; n <= m; n++) {
+    summ += cos(theta(t) - t * log(n)) / sqrt(n);
 }
 summ *= 2;
 
-const M = 2;
-let correction : any = 0;
-for (let j = 0; j < M; j ++)
-{
-    correction += multiply(multiply(pow(-1, j), pow(T, -j)), phi(j, z));
-}
-correction *= multiply(pow(-1, m + 1), pow(T, -1/2)) as number;
+const c0 = Psi(T - m);
+const c1 = sqrt(2 * pi / t) * c0;
+const correction = pow(-1, m - 1) * pow(2 * pi / t, 0.25) * (c0 + c1);
 
-const res = summ + correction;
-return res;
+return summ + correction;
 }
 
-export function phi(j: number, z: number) : number
-{
-if (j == 0)
-{
-    return cos((0.5 * pi * z ** 2) + (3 / 8) * pi ) / cos(pi * z);
+function Psi(t: number): number {
+    return cos(2 * pi * (t ** 2 - t - 1 / 16)) / cos(2 * pi * t);
 }
-else if (j == 1)
-{
-    const piZ = multiply(pi, z);
-    const piZ2 = multiply(pi, pow(z, 2));
-    const sinPiZ = sin(piZ);
-    const cosPiZ = cos(piZ);
-    const cosPiZSquared = pow(cosPiZ, 2);
-    const sinPiZSquared = pow(sinPiZ, 2);
-    const cosPiZCubed = pow(cosPiZ, 3);
-    
-    const angle = add(divide(piZ2, 2), multiply(3, pi / 8)) as number;
-    const sinAngle = sin(angle);
-    const cosAngle = cos(angle);
-    
-    const term1 = multiply(
-        add(
-        multiply(2 * pi * z, multiply(cosPiZ, sinPiZ)),
-        cosPiZSquared
-        ),
-        sinAngle
-    );
-    
-    const term2 = multiply(
-        add(
-        multiply(subtract(multiply(pi, pow(z, 2)), pi), cosPiZSquared),
-        multiply(-2 * pi, sinPiZSquared)
-        ),
-        cosAngle
-    );
-    
-    const numerator = multiply(-pi, add(term1, term2));
-    const result = divide(numerator, cosPiZCubed);
-    
-    return result.valueOf() as number;
-}
-else
-{
-    return 0;
+
+function T(t: number): number {
+    return sqrt(t / (2 * pi)) - floor(sqrt(t / (2 * pi)));
 }
 }
 
