@@ -53,7 +53,7 @@ export const options = {
   },
 };
 
-console.log(riemann.Z(21.02204));
+console.log(riemann.Z(14.134725142));
 let t = 0;
 const step = 0.3;
 function App() {
