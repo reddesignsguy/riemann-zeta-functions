@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/riemann-zeta-functions/static/css/main.f855e6bc.css",
+    "main.js": "/riemann-zeta-functions/static/js/main.acc66d48.js",
+    "static/js/453.cbc79a8d.chunk.js": "/riemann-zeta-functions/static/js/453.cbc79a8d.chunk.js",
+    "index.html": "/riemann-zeta-functions/index.html",
+    "main.f855e6bc.css.map": "/riemann-zeta-functions/static/css/main.f855e6bc.css.map",
+    "main.acc66d48.js.map": "/riemann-zeta-functions/static/js/main.acc66d48.js.map",
+    "453.cbc79a8d.chunk.js.map": "/riemann-zeta-functions/static/js/453.cbc79a8d.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f855e6bc.css",
+    "static/js/main.acc66d48.js"
+  ]
+}
