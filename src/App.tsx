@@ -14,6 +14,9 @@ import { Scatter } from "react-chartjs-2";
 import { zeta, complex, Complex, round } from "mathjs";
 import * as riemann from "./utils/riemann";
 
+let t = 0.13;
+const step = 0.1;
+
 ChartJS.register(
   LinearScale,
   PointElement,
@@ -28,10 +31,11 @@ export let data = {
   datasets: [
     {
       label: "Riemann-Siegel Formula",
-      data: [], // scatter expects [{ x, y }]
+      data: [],
       borderColor: "rgb(255, 176, 58)",
+      backgroundColor: "rgb(255, 176, 58)",
       borderWidth: 2.2,
-      showLine: true, // optional: disables connecting lines
+      showLine: true,
       lineWidth: 0.2,
       tension: 0.2,
       pointRadius: 0,
@@ -43,6 +47,14 @@ export const options = {
   maintainAspectRatio: false,
   scales: {
     x: {
+      title: {
+        display: true,
+        text: "Real ", // ⬅️ your custom y-axis title
+        font: {
+          weight: 600,
+          size: 14,
+        },
+      },
       display: true,
       min: -3,
       max: 8,
@@ -55,6 +67,14 @@ export const options = {
       },
     },
     y: {
+      title: {
+        display: true,
+        text: "Imaginary (t)", // ⬅️ your custom y-axis title
+        font: {
+          weight: 600,
+          size: 14,
+        },
+      },
       grid: {
         color: (ctx: any) =>
           ctx.tick.value === 0
@@ -66,12 +86,34 @@ export const options = {
       max: 6,
     },
   },
+  plugins: {
+    title: {
+      display: true,
+      text: "Approximating Z(T) on the Critical Line",
+      font: {
+        weight: 600, // 👈 Makes the title bold
+        size: 18, // (optional) You can set size too
+      },
+      padding: {
+        top: 10,
+        bottom: 30,
+      },
+    },
+    legend: {
+      labels: {
+        font: {
+          weight: 400,
+          size: 14,
+        },
+        color: "#474747", // Optional: legend text color
+      },
+    },
+  },
 };
 
-let t = 0.13;
-const step = 0.1;
 function App() {
   const graphRef = useRef(null);
+  const [tView, setTView] = useState(t);
 
   // Function to dynamically add a point
   const addPoint = (x: number, y: number) => {
@@ -80,12 +122,6 @@ function App() {
 
     chart.data.labels!.push(x);
     chart.data.datasets[0].data.push({ x, y });
-
-    // Limit number of points shown (optional)
-    // if (chart.data.labels!.length > 1000) {
-    //   chart.data.labels!.shift();
-    //   chart.data.datasets[0].data.shift();
-    // }
 
     chart.update("none"); // no animation
   };
@@ -97,19 +133,39 @@ function App() {
       const x = output.re;
       const y = output.im;
       addPoint(x, y);
-      console.log("input: ", t, "output: ", output);
 
       t += step;
-    }, 10);
+      t = round(t, 1);
+      setTView(t);
+    }, 25);
 
     return () => clearInterval(interval);
   }, []);
 
   return (
     <div className="App">
-      testing
-      <div style={{ width: "800px", height: "800px" }}>
+      <header style={{ textAlign: "left" }}>Albany Patriawan</header>
+      <div
+        style={{
+          width: "800px",
+          height: "800px",
+          margin: "auto",
+          display: "flex",
+          flexDirection: "row",
+        }}
+      >
         <Scatter ref={graphRef} options={options} data={data} />;
+        <span
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          {" "}
+          <span>t=</span>
+          {tView}
+        </span>
       </div>
     </div>
   );
