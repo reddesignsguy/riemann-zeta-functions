@@ -11,7 +11,7 @@ import {
 } from "chart.js";
 import { useEffect, useRef, useState } from "react";
 import { Scatter } from "react-chartjs-2";
-import { zeta, complex, Complex, round } from "mathjs";
+import { round } from "mathjs";
 import * as riemann from "./utils/riemann";
 
 let t = 0.13;

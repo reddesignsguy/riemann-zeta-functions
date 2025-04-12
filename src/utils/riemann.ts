@@ -1,4 +1,4 @@
-import {add, chain, Complex, cos, divide, e, floor, log, multiply, pi, pow, sin, sqrt, subtract } from "mathjs";
+import { cos, e, floor, log, pi, pow, sin, sqrt } from "mathjs";
 
 export function Z(t: number)
 {
@@ -28,7 +28,7 @@ export enum ComplexComponent{
 export function E(comp : ComplexComponent, a: number, b: number)
 {
     let res = pow(e, a) as number;
-    if (comp == ComplexComponent.re)
+    if (comp === ComplexComponent.re)
     {
         return res * cos(b);
     }
